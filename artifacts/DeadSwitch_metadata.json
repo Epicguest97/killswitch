@@ -1,0 +1,301 @@
+{
+	"compiler": {
+		"version": "0.8.34+commit.80d5c536"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "owner",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "amount",
+						"type": "uint256"
+					}
+				],
+				"name": "FundsDeposited",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "owner",
+						"type": "address"
+					},
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "beneficiary",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "amount",
+						"type": "uint256"
+					}
+				],
+				"name": "InheritanceClaimed",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "owner",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "timestamp",
+						"type": "uint256"
+					}
+				],
+				"name": "ProofOfLife",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "owner",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "refund",
+						"type": "uint256"
+					}
+				],
+				"name": "WillCancelled",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "owner",
+						"type": "address"
+					},
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "beneficiary",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "interval",
+						"type": "uint256"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "amount",
+						"type": "uint256"
+					}
+				],
+				"name": "WillCreated",
+				"type": "event"
+			},
+			{
+				"inputs": [],
+				"name": "cancelWill",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "checkIn",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "owner",
+						"type": "address"
+					}
+				],
+				"name": "claimInheritance",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address payable",
+						"name": "beneficiary",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "intervalInSeconds",
+						"type": "uint256"
+					}
+				],
+				"name": "createWill",
+				"outputs": [],
+				"stateMutability": "payable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "deposit",
+				"outputs": [],
+				"stateMutability": "payable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "owner",
+						"type": "address"
+					}
+				],
+				"name": "timeUntilClaimable",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"name": "wills",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "owner",
+						"type": "address"
+					},
+					{
+						"internalType": "address payable",
+						"name": "beneficiary",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "balance",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "lastCheckIn",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "checkInInterval",
+						"type": "uint256"
+					},
+					{
+						"internalType": "bool",
+						"name": "exists",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {
+				"claimInheritance(address)": {
+					"params": {
+						"owner": "The (inactive) owner's address whose will is being claimed."
+					}
+				}
+			},
+			"title": "DeadSwitch - Trustless Digital Inheritance",
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {
+				"cancelWill()": {
+					"notice": "Owner cancels the will and reclaims everything (while alive)."
+				},
+				"checkIn()": {
+					"notice": "Owner signals they are alive. Resets the claim timer."
+				},
+				"claimInheritance(address)": {
+					"notice": "Beneficiary claims funds after the owner has gone silent."
+				},
+				"createWill(address,uint256)": {
+					"notice": "Register a new will. Value sent is locked immediately."
+				},
+				"deposit()": {
+					"notice": "Lock additional ETH into an existing will."
+				},
+				"timeUntilClaimable(address)": {
+					"notice": "Read-only helper: how many seconds until the claim window opens."
+				}
+			},
+			"notice": "A dead man's switch for crypto assets. If the owner stops         checking in before a timeout, the nominated beneficiary can         claim the locked funds. No lawyer, no bank, no trusted third         party holds the money at any point - the contract enforces it.",
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"deadSwitch.sol": "DeadSwitch"
+		},
+		"evmVersion": "osaka",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"deadSwitch.sol": {
+			"keccak256": "0xc920b2d31b6c21fe7d482a296cd2906781d4addf7984187af3d206af6d4f09fa",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://ccdb2b5af94783f31514ea2acad58dcad2231223e5d657790b50708b3c568714",
+				"dweb:/ipfs/QmP8sceNGpRbDJ9hP88MwpRXQHF7cXNb8UJTiyrVoW4V5j"
+			]
+		}
+	},
+	"version": 1
+}
