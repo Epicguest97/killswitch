@@ -62,47 +62,6 @@ asks the user to enter a private key or seed phrase.
 6. The interface can read the beneficiary, locked balance, last check-in, and
    time remaining directly from the blockchain without sending a transaction.
 
-## How to run the application
-
-### Requirements
-
-- A modern browser
-- MetaMask
-- Sepolia ETH for transaction fees and testing
-- Python 3 or another local static file server
-
-### Start the frontend
-
-From the repository root, run:
-
-```bash
-python3 -m http.server 8000
-```
-
-Open <http://localhost:8000/> in the browser. The landing page links to the
-management interface at <http://localhost:8000/manage.html>.
-
-### Connect MetaMask
-
-1. Install and unlock MetaMask.
-2. Switch MetaMask to the **Sepolia test network**.
-3. Open `manage.html`.
-4. Click **Connect MetaMask**.
-5. Select the owner account and approve the connection request.
-6. Confirm that the page displays the connected address and wallet balance.
-
-### Create and manage a will
-
-1. In **Create a will**, enter a valid beneficiary address that is different
-   from the owner account.
-2. Enter a whole-number check-in interval of at least 60 seconds.
-3. Enter an ETH amount greater than zero.
-4. Click **Create Will** and confirm the transaction in MetaMask.
-5. Use **Read from Blockchain** to verify the stored beneficiary, balance,
-   last check-in, and claim countdown.
-6. Use **Check In — Proof of Life** before the deadline to reset the timer.
-7. After the timeout, connect the beneficiary account, enter the owner's
-   address, and click **Claim Inheritance**.
 
 ## Test cases and observed results
 
