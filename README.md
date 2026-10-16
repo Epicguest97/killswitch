@@ -1,3 +1,13 @@
+# Blockchain Technology Assignment - 2
+
+| Submission detail | Information |
+| --- | --- |
+| Student name | Mehul Kaushik |
+| Registration number | 230905204 |
+| Assignment title | Blockchain Technology Assignment - 2 |
+| Developed DApp | DeadSwitch |
+| GitHub repository | [https://github.com/Epicguest97/killswitch](https://github.com/Epicguest97/killswitch) |
+
 # DeadSwitch
 
 ## Decentralised digital inheritance DApp
