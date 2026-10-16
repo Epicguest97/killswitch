@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#171717">
+  <meta name="description" content="A plain-language explanation of how DeadSwitch digital inheritance works.">
+  <title>How it works — DeadSwitch</title>
+  <script>
+    if (localStorage.getItem("deadswitch-theme") !== "light") {
+      document.documentElement.dataset.theme = "dark";
+    }
+  </script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: #171717; background: #fff; font-synthesis: none;
+      text-rendering: optimizeLegibility; -webkit-font-smoothing: antialiased;
+      --muted: #6f6f6f; --border: #e5e5e5; --soft: #fafafa;
+      --panel: #fff; --page: #fff;
+    }
+    html { background: var(--page); overscroll-behavior-y: none; }
+    body { background: var(--page); color: #171717; min-height: 100vh; padding: 0 24px 64px; line-height: 1.7; transition: background-color .2s ease, color .2s ease; }
+    a { color: inherit; } button { font: inherit; }
+    .wrap { max-width: 920px; margin: 0 auto; }
+    .nav { position: sticky; top: 0; z-index: 10; display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 24px 0; background: var(--page); border-bottom: 1px solid var(--border); transition: background-color .2s ease, border-color .2s ease; }
+    .brand { font-size: 21px; font-weight: 750; letter-spacing: -1px; text-decoration: none; }
+    .brand-dot { color: #737373; }
+    .nav-right { display: flex; align-items: center; gap: 22px; font-size: 13px; color: var(--muted); }
+    .nav-right a { text-decoration: none; } .nav-right a:hover { color: #171717; }
+    .network-label, .theme-toggle { border: 1px solid var(--border); border-radius: 6px; padding: 5px 9px; font-size: 11px; white-space: nowrap; }
+    .network-label { border-radius: 20px; letter-spacing: .4px; }
+    .theme-toggle { margin: 0; background: transparent; color: var(--muted); cursor: pointer; }
+    .theme-toggle:hover { background: var(--soft); color: #171717; }
+    .intro { padding: 82px 0 64px; border-bottom: 1px solid var(--border); }
+    .eyebrow, .label { color: var(--muted); font-size: 11px; font-weight: 650; letter-spacing: 1.5px; text-transform: uppercase; }
+    .eyebrow { margin-bottom: 18px; }
+    h1 { max-width: 700px; font-size: clamp(42px, 7vw, 68px); line-height: 1.06; letter-spacing: -3.5px; margin-bottom: 24px; }
+    .lead { max-width: 650px; color: var(--muted); font-size: 17px; line-height: 1.85; }
+    .content { padding: 64px 0; }
+    .content > .label { margin-bottom: 18px; }
+    .content h2 { max-width: 660px; font-size: clamp(28px, 4vw, 40px); line-height: 1.2; letter-spacing: -1.5px; margin-bottom: 18px; }
+    .content > p { max-width: 680px; color: var(--muted); }
+    .explanation { margin-top: 42px; max-width: 680px; }
+    .explanation p { color: var(--muted); font-size: 15px; margin-bottom: 25px; }
+    .explanation p:last-child { margin-bottom: 0; }
+    .explanation strong { color: inherit; font-weight: 650; }
+    .footer { display: flex; justify-content: space-between; gap: 24px; padding-top: 28px; border-top: 1px solid var(--border); color: var(--muted); font-size: 11px; }
+    .footer p + p { margin-top: 5px; }
+    [data-theme="dark"] { --page: #171717; --panel: #202020; --muted: #a6a6a6; --border: #383838; --soft: #242424; }
+    [data-theme="dark"] body { color: #f2f2f2; }
+    @media (max-width: 680px) {
+      body { padding: 0 17px 40px; } .nav { padding: 19px 0; }
+      .nav-right { gap: 10px; } .nav-about { display: none; }
+      .intro { padding: 64px 0 48px; } h1 { letter-spacing: -2.5px; }
+      .footer { flex-direction: column; gap: 12px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <nav class="nav">
+      <a href="index.html" class="brand">DeadSwitch<span class="brand-dot">.</span></a>
+      <div class="nav-right">
+        <a href="index.html#why" class="nav-about">Why DeadSwitch</a>
+        <a href="how.html" class="nav-about">How it works</a>
+        <a href="manage.html">Application</a>
+        <span class="network-label">ETHEREUM</span>
+        <button class="theme-toggle" type="button" aria-label="Switch to dark mode">Dark</button>
+      </div>
+    </nav>
+
+    <header class="intro">
+      <p class="eyebrow">How it works</p>
+      <h1>A timer, a contract, and a wallet you control.</h1>
+      <p class="lead">DeadSwitch does not decide whether someone has died. It gives an owner a simple on-chain rule: if they stop checking in for a chosen amount of time, their named beneficiary may claim the ETH held in the will.</p>
+    </header>
+
+    <main class="content">
+      <p class="label">The basic idea</p>
+      <h2>Set a rule once. Keep checking in.</h2>
+
+      <div class="explanation">
+        <p><strong>First, create a will.</strong> Connect the wallet that owns the funds, choose a beneficiary, set how often you will check in, and deposit ETH. The smart contract records those choices on Ethereum.</p>
+
+        <p><strong>Then, stay active.</strong> Each check-in resets the timer. You can also add more ETH or cancel the will while it is active. This site only helps you send transactions; it never holds your private key.</p>
+
+        <p><strong>If the timer runs out, the beneficiary can try to claim.</strong> They connect their own wallet and submit the owner’s address. The contract checks the beneficiary and the timer before moving any funds.</p>
+
+        <p>A missed check-in only shows inactivity. It is not legal proof of death, and the contract cannot settle inheritance disputes. Review the contract and use small amounts while testing.</p>
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div><p><strong>DeadSwitch.</strong> Trustless digital inheritance.</p><p>Built on Ethereum.</p></div>
+      <div><p>Code replaces custody, not legal advice.</p><p><a href="manage.html">Manage your will →</a></p></div>
+    </footer>
+  </div>
+  <script>
+    const themeToggle = document.querySelector(".theme-toggle");
+    if (localStorage.getItem("deadswitch-theme") === "dark") document.documentElement.dataset.theme = "dark";
+    function updateThemeToggle() {
+      const dark = document.documentElement.dataset.theme === "dark";
+      themeToggle.textContent = dark ? "Light" : "Dark";
+      themeToggle.setAttribute("aria-label", dark ? "Switch to light mode" : "Switch to dark mode");
+    }
+    updateThemeToggle();
+    themeToggle.addEventListener("click", () => {
+      const dark = document.documentElement.dataset.theme !== "dark";
+      document.documentElement.dataset.theme = dark ? "dark" : "light";
+      localStorage.setItem("deadswitch-theme", dark ? "dark" : "light");
+      updateThemeToggle();
+    });
+  </script>
+</body>
+</html>

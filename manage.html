@@ -1,0 +1,1265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#171717">
+  <meta name="description" content="Manage your DeadSwitch digital inheritance will on Ethereum.">
+  <title>Manage your inheritance — DeadSwitch</title>
+  <script>
+    if (localStorage.getItem("deadswitch-theme") !== "light") {
+      document.documentElement.dataset.theme = "dark";
+    }
+  </script>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI",
+        sans-serif;
+      color: #171717;
+      background: #ffffff;
+      font-synthesis: none;
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+      --muted: #737373;
+      --border: #e8e8e8;
+      --soft: #fafafa;
+      --black: #171717;
+      --page: #ffffff;
+      --panel: #ffffff;
+      --text-soft: #666666;
+      --control: #ffffff;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: 24px;
+      background: var(--page);
+      overscroll-behavior-y: none;
+    }
+
+    body {
+      background: var(--page);
+      color: var(--black);
+      min-height: 100vh;
+      padding: 0 24px 64px;
+      line-height: 1.65;
+      transition: background-color .2s ease, color .2s ease;
+    }
+
+    button,
+    input {
+      font: inherit;
+    }
+
+    button,
+    a {
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    .wrap {
+      max-width: 920px;
+      margin: 0 auto;
+    }
+
+    /* Navigation */
+
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 24px 0;
+      background: var(--page);
+      border-bottom: 1px solid var(--border);
+      transition: background-color .2s ease, border-color .2s ease;
+    }
+
+    .brand {
+      font-size: 21px;
+      font-weight: 750;
+      letter-spacing: -1px;
+      text-decoration: none;
+    }
+
+    .brand-dot {
+      color: #737373;
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 22px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .nav-right a {
+      text-decoration: none;
+    }
+
+    .nav-right a:hover {
+      color: var(--black);
+    }
+
+    .theme-toggle {
+      width: auto;
+      min-height: 0;
+      padding: 5px 9px;
+      margin: 0;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      background: transparent;
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 500;
+    }
+
+    .theme-toggle:hover {
+      background: var(--soft);
+      color: var(--black);
+    }
+
+    .network-label {
+      border: 1px solid var(--border);
+      padding: 5px 10px;
+      border-radius: 20px;
+      font-size: 11px;
+      letter-spacing: .4px;
+      white-space: nowrap;
+    }
+
+    /* Hero */
+
+    .hero {
+      padding: 88px 0 64px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .eyebrow {
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 650;
+      letter-spacing: 1.8px;
+      text-transform: uppercase;
+      margin-bottom: 23px;
+    }
+
+    h1 {
+      max-width: 760px;
+      font-size: clamp(42px, 7vw, 72px);
+      font-weight: 650;
+      letter-spacing: -4px;
+      line-height: 1.05;
+      margin-bottom: 26px;
+    }
+
+    .hero-description {
+      max-width: 650px;
+      color: #666666;
+      font-size: 17px;
+      line-height: 1.9;
+      margin-bottom: 30px;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 44px;
+    }
+
+    .hero-link {
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      gap: 9px;
+      padding: 12px 18px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 550;
+      text-decoration: none;
+      transition: background .15s ease;
+    }
+
+    .hero-link.primary {
+      background: var(--black);
+      color: white;
+      border-color: var(--black);
+    }
+
+    .hero-link.primary:hover {
+      background: #333333;
+    }
+
+    .hero-link:not(.primary):hover {
+      background: var(--soft);
+    }
+
+    .hero-note {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      max-width: 590px;
+      color: #737373;
+      font-size: 12px;
+    }
+
+    .hero-note-symbol {
+      color: var(--black);
+      font-size: 15px;
+      flex-shrink: 0;
+    }
+
+    /* Trust argument */
+
+    .trust-section {
+      padding: 74px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .section-label {
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 650;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin-bottom: 17px;
+    }
+
+    .section-title {
+      max-width: 700px;
+      font-size: clamp(28px, 4.5vw, 43px);
+      line-height: 1.2;
+      font-weight: 620;
+      letter-spacing: -1.8px;
+      margin-bottom: 20px;
+    }
+
+    .section-description {
+      max-width: 700px;
+      color: #666666;
+      font-size: 15px;
+      line-height: 1.9;
+    }
+
+    .trust-quote {
+      margin-top: 30px;
+      border-left: 2px solid #171717;
+      padding: 5px 0 5px 22px;
+      font-size: clamp(18px, 3vw, 23px);
+      line-height: 1.65;
+      font-weight: 550;
+      letter-spacing: -.5px;
+    }
+
+    .risk-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 34px;
+    }
+
+    .risk-item {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 21px;
+    }
+
+    .risk-number {
+      color: #a3a3a3;
+      font-size: 11px;
+      letter-spacing: 1px;
+      margin-bottom: 13px;
+    }
+
+    .risk-item h3 {
+      font-size: 15px;
+      font-weight: 620;
+      margin-bottom: 7px;
+    }
+
+    .risk-item p {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.8;
+    }
+
+    /* Solution */
+
+    .solution-section {
+      padding: 74px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 34px;
+    }
+
+    .feature {
+      background: var(--soft);
+      border: 1px solid #f0f0f0;
+      border-radius: 10px;
+      padding: 22px 18px;
+    }
+
+    .feature-icon {
+      width: 34px;
+      height: 34px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid #e5e5e5;
+      background: white;
+      border-radius: 8px;
+      font-size: 16px;
+      margin-bottom: 20px;
+    }
+
+    .feature h3 {
+      font-size: 14px;
+      font-weight: 620;
+      margin-bottom: 8px;
+    }
+
+    .feature p {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.85;
+    }
+
+    /* How it works */
+
+    .steps-section {
+      padding: 74px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .steps {
+      margin-top: 32px;
+    }
+
+    .step {
+      display: grid;
+      grid-template-columns: 44px 1fr;
+      gap: 18px;
+      padding: 22px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .step:last-child {
+      border-bottom: none;
+    }
+
+    .step-number {
+      width: 34px;
+      height: 34px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border: 1px solid var(--border);
+      border-radius: 50%;
+      font-size: 12px;
+      color: #525252;
+    }
+
+    .step h3 {
+      font-size: 15px;
+      font-weight: 620;
+      margin-bottom: 5px;
+    }
+
+    .step p {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.8;
+    }
+
+    /* Contract dashboard */
+
+    .app-section {
+      padding: 74px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .app-heading {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 18px;
+      margin-bottom: 28px;
+    }
+
+    .app-heading .section-title {
+      margin-bottom: 9px;
+    }
+
+    .app-heading .section-description {
+      font-size: 13px;
+    }
+
+    .card {
+      min-width: 0;
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: 11px;
+      padding: 24px;
+      margin-bottom: 14px;
+      transition: border-color .15s ease;
+    }
+
+    .card:hover {
+      border-color: #d2d2d2;
+    }
+
+    .card h2 {
+      font-size: 14px;
+      font-weight: 650;
+      letter-spacing: -.2px;
+      margin-bottom: 18px;
+    }
+
+    .card-description {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.8;
+      margin-top: -9px;
+      margin-bottom: 17px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    input {
+      display: block;
+      width: 100%;
+      min-width: 0;
+      padding: 12px 13px;
+      margin-bottom: 11px;
+      border: 1px solid #dedede;
+      border-radius: 7px;
+      background: #ffffff;
+      color: #171717;
+      font-size: 13px;
+      outline: none;
+      transition: border-color .15s ease, box-shadow .15s ease;
+    }
+
+    input::placeholder {
+      color: #a3a3a3;
+    }
+
+    input:focus {
+      border-color: #737373;
+      box-shadow: 0 0 0 3px #00000008;
+    }
+
+    button {
+      width: 100%;
+      min-height: 43px;
+      padding: 11px 15px;
+      margin-bottom: 9px;
+      border: 1px solid #171717;
+      border-radius: 7px;
+      background: #171717;
+      color: #ffffff;
+      font-size: 13px;
+      font-weight: 550;
+      cursor: pointer;
+      transition: background .15s ease, transform .1s ease;
+    }
+
+    button:hover {
+      background: #333333;
+    }
+
+    button:active {
+      transform: scale(.99);
+    }
+
+    button.secondary {
+      background: #ffffff;
+      color: #171717;
+      border-color: #dedede;
+    }
+
+    button.secondary:hover {
+      background: #f7f7f7;
+    }
+
+    button.danger {
+      background: #ffffff;
+      color: #b42318;
+      border-color: #e5b8b8;
+    }
+
+    button.danger:hover {
+      background: #fff5f5;
+    }
+
+    button:disabled {
+      opacity: .5;
+      cursor: not-allowed;
+    }
+
+    #status {
+      font-size: 12px;
+      color: var(--muted);
+      margin: 5px 0 14px;
+      overflow-wrap: anywhere;
+    }
+
+    .stat {
+      color: var(--muted);
+      font-size: 12px;
+      margin-top: 11px;
+      overflow-wrap: anywhere;
+    }
+
+    .stat b {
+      color: #171717;
+      font-weight: 550;
+    }
+
+    .event-label {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .event-label h2 {
+      margin-bottom: 0;
+    }
+
+    .event-label span {
+      font-size: 10px;
+      color: var(--muted);
+      letter-spacing: .8px;
+    }
+
+    #log {
+      background: #fafafa;
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      padding: 15px;
+      color: #525252;
+      font-family: "SFMono-Regular", Consolas, monospace;
+      font-size: 11px;
+      line-height: 1.9;
+      max-height: 240px;
+      min-height: 50px;
+      overflow-y: auto;
+      overflow-wrap: anywhere;
+      white-space: pre-wrap;
+    }
+
+    .app-disclaimer {
+      color: #8a8a8a;
+      font-size: 11px;
+      line-height: 1.8;
+      margin-top: 14px;
+    }
+
+    [data-theme="dark"] {
+      --page: #171717;
+      --panel: #202020;
+      --black: #f2f2f2;
+      --muted: #a6a6a6;
+      --border: #383838;
+      --soft: #242424;
+      --text-soft: #bdbdbd;
+      --control: #202020;
+    }
+
+    [data-theme="dark"] .hero-description,
+    [data-theme="dark"] .section-description {
+      color: var(--text-soft);
+    }
+
+    [data-theme="dark"] .feature,
+    [data-theme="dark"] .card {
+      background: var(--panel);
+      border-color: var(--border);
+    }
+
+    [data-theme="dark"] .hero-link.primary {
+      background: #f2f2f2;
+      color: #171717;
+      border-color: #f2f2f2;
+    }
+
+    [data-theme="dark"] .hero-link.primary:hover {
+      background: #ffffff;
+    }
+
+    [data-theme="dark"] .feature-icon,
+    [data-theme="dark"] input,
+    [data-theme="dark"] button.secondary,
+    [data-theme="dark"] button.danger {
+      background: var(--control);
+      color: var(--black);
+      border-color: var(--border);
+    }
+
+    [data-theme="dark"] input::placeholder {
+      color: #858585;
+    }
+
+    [data-theme="dark"] #log {
+      background: #181818;
+      color: #c5c5c5;
+      border-color: var(--border);
+    }
+
+    [data-theme="dark"] .stat b,
+    [data-theme="dark"] strong {
+      color: var(--black) !important;
+    }
+
+    /* Footer */
+
+    .footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 24px;
+      padding: 28px 0 0;
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    .footer strong {
+      color: #404040;
+      font-weight: 600;
+    }
+
+    .footer p + p {
+      margin-top: 5px;
+    }
+
+    @media (max-width: 680px) {
+      body {
+        padding: 0 17px 40px;
+      }
+
+      .nav {
+        padding: 19px 0;
+      }
+
+      .nav-right {
+        gap: 12px;
+      }
+
+      .nav-right .nav-about {
+        display: none;
+      }
+
+      .hero {
+        padding: 64px 0 48px;
+      }
+
+      h1 {
+        font-size: clamp(40px, 11vw, 58px);
+        letter-spacing: -2.5px;
+      }
+
+      .hero-description {
+        font-size: 15px;
+      }
+
+      .trust-section,
+      .solution-section,
+      .steps-section,
+      .app-section {
+        padding: 52px 0;
+      }
+
+      .risk-grid,
+      .feature-grid,
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      .feature-grid {
+        gap: 10px;
+      }
+
+      .feature {
+        padding: 19px;
+      }
+
+      .feature-icon {
+        margin-bottom: 12px;
+      }
+
+      .card {
+        padding: 19px;
+      }
+
+      .app-heading {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .footer {
+        flex-direction: column;
+        gap: 12px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <nav class="nav">
+      <a href="index.html" class="brand">DeadSwitch<span class="brand-dot">.</span></a>
+
+      <div class="nav-right">
+        <a href="index.html#why" class="nav-about">Why DeadSwitch</a>
+        <a href="how.html" class="nav-about">How it works</a>
+        <a href="manage.html">Application</a>
+        <span class="network-label">ETHEREUM</span>
+        <button class="theme-toggle" type="button" aria-label="Switch to dark mode">Dark</button>
+      </div>
+    </nav>
+
+    <main class="app-section" id="manage">
+      <div class="app-heading">
+        <div>
+          <p class="section-label">04 / On-chain application</p>
+          <h2 class="section-title">Manage your inheritance.</h2>
+          <p class="section-description">
+            Interact directly with the deployed DeadSwitch
+            smart contract through MetaMask.
+          </p>
+        </div>
+      </div>
+
+      <!-- Connect wallet -->
+      <div class="card">
+        <h2>01. Connect wallet</h2>
+
+        <p class="card-description">
+          Connect the wallet that owns your will.
+        </p>
+
+        <button id="connectBtn">Connect MetaMask</button>
+
+        <div id="status">Not connected</div>
+
+        <div class="stat">
+          Your wallet balance:
+          <b id="ethBalance">-</b> ETH
+        </div>
+      </div>
+
+      <div class="grid">
+
+        <!-- Create will -->
+        <div class="card">
+          <h2>02. Create a will</h2>
+
+          <p class="card-description">
+            Set your beneficiary, check-in interval, and initial
+            ETH deposit.
+          </p>
+
+          <input
+            id="beneficiary"
+            placeholder="Beneficiary address (0x...)"
+            aria-label="Beneficiary address"
+          >
+
+          <input
+            id="interval"
+            type="number"
+            min="60"
+            step="1"
+            placeholder="Check-in interval (seconds, min 60)"
+            aria-label="Check-in interval in seconds"
+          >
+
+          <input
+            id="lockAmount"
+            type="number"
+            min="0"
+            step="0.01"
+            placeholder="ETH to lock now"
+            aria-label="ETH to lock"
+          >
+
+          <button id="createBtn">Create Will</button>
+        </div>
+
+        <!-- Owner controls -->
+        <div class="card">
+          <h2>03. Manage your will</h2>
+
+          <p class="card-description">
+            Deposit more ETH, reset your check-in timer,
+            or cancel your will if permitted by the contract.
+          </p>
+
+          <input
+            id="depositAmount"
+            type="number"
+            min="0"
+            step="0.01"
+            placeholder="ETH to add"
+            aria-label="Additional ETH deposit"
+          >
+
+          <button id="depositBtn" class="secondary">
+            Deposit More
+          </button>
+
+          <button id="checkinBtn" class="secondary">
+            ♥ Check In — Proof of Life
+          </button>
+
+          <button id="cancelBtn" class="danger">
+            Cancel Will &amp; Reclaim
+          </button>
+        </div>
+
+        <!-- Beneficiary claim -->
+        <div class="card">
+          <h2>04. Claim inheritance</h2>
+
+          <p class="card-description">
+            Enter the address of the inactive will's owner.
+            The contract determines whether a claim is allowed.
+          </p>
+
+          <input
+            id="ownerAddr"
+            placeholder="Inactive owner's address (0x...)"
+            aria-label="Inactive owner's wallet address"
+          >
+
+          <button id="claimBtn" class="danger">
+            Claim Inheritance
+          </button>
+        </div>
+
+        <!-- Inspect will -->
+        <div class="card">
+          <h2>05. Inspect a will</h2>
+
+          <p class="card-description">
+            Read a will's current state from the blockchain
+            without sending a transaction.
+          </p>
+
+          <input
+            id="queryAddr"
+            placeholder="Owner address to look up (0x...)"
+            aria-label="Owner address to inspect"
+          >
+
+          <button id="queryBtn" class="secondary">
+            Read from Blockchain
+          </button>
+
+          <div class="stat">
+            Beneficiary: <b id="qBen">-</b>
+          </div>
+
+          <div class="stat">
+            Locked: <b id="qBal">-</b> ETH
+          </div>
+
+          <div class="stat">
+            Last check-in: <b id="qLast">-</b>
+          </div>
+
+          <div class="stat">
+            Claim opens in: <b id="qEta">-</b> seconds
+          </div>
+        </div>
+      </div>
+
+      <!-- Event log -->
+      <div class="card">
+        <div class="event-label">
+          <h2>Transaction log</h2>
+          <span>LOCAL SESSION</span>
+        </div>
+
+        <div id="log">Ready. Connect MetaMask to begin.</div>
+
+        <p class="app-disclaimer">
+          Blockchain reads and transaction results depend on
+          your selected network and deployed contract. Transactions
+          may require gas fees. Always verify the contract address
+          and network before depositing funds.
+        </p>
+      </div>
+    </main>
+
+
+    <footer class="footer">
+      <div>
+        <p><strong>DeadSwitch.</strong> Trustless digital inheritance.</p>
+        <p>Built on Ethereum.</p>
+      </div>
+
+      <div>
+        <p>Code replaces custody, not legal advice.</p>
+        <p>Use only funds you can afford to risk during testing.</p>
+      </div>
+    </footer>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/ethers@6.7.0/dist/ethers.umd.min.js"></script>
+
+  <script>
+    const CONTRACT_ADDRESS = "0xA9385c09c5eFFD3783Ff2705562c5e66126C1A78";
+
+    const ABI = [
+      "function createWill(address payable beneficiary, uint256 intervalInSeconds) payable",
+      "function deposit() payable",
+      "function checkIn()",
+      "function cancelWill()",
+      "function claimInheritance(address owner)",
+      "function timeUntilClaimable(address owner) view returns (uint256)",
+      "function wills(address owner) view returns (address owner, address beneficiary, uint256 balance, uint256 lastCheckIn, uint256 checkInInterval, bool exists)",
+      "event WillCreated(address indexed owner, address indexed beneficiary, uint256 interval, uint256 amount)",
+      "event FundsDeposited(address indexed owner, uint256 amount)",
+      "event ProofOfLife(address indexed owner, uint256 timestamp)",
+      "event WillCancelled(address indexed owner, uint256 refund)",
+      "event InheritanceClaimed(address indexed owner, address indexed beneficiary, uint256 amount)"
+    ];
+
+    let provider, signer, contract;
+
+    // Report uncaught JavaScript errors in the transaction log.
+    window.addEventListener("error", (e) => {
+      const el = document.getElementById("log");
+      el.textContent =
+        (el.textContent === "Ready. Connect MetaMask to begin."
+          ? ""
+          : el.textContent + "\n") +
+        "JS error: " + e.message;
+
+      el.scrollTop = el.scrollHeight;
+    });
+
+    function log(msg) {
+      const el = document.getElementById("log");
+
+      el.textContent =
+        (el.textContent === "Ready. Connect MetaMask to begin."
+          ? ""
+          : el.textContent + "\n") + msg;
+
+      el.scrollTop = el.scrollHeight;
+    }
+
+    async function connect() {
+      if (!window.ethereum) {
+        alert("MetaMask not detected! Please install MetaMask.");
+        return;
+      }
+
+      try {
+        provider = new ethers.BrowserProvider(window.ethereum);
+
+        await provider.send("eth_requestAccounts", []);
+
+        signer = await provider.getSigner();
+
+        contract = new ethers.Contract(
+          CONTRACT_ADDRESS,
+          ABI,
+          signer
+        );
+
+        const addr = await signer.getAddress();
+
+        document.getElementById("status").textContent =
+          "Connected: " + addr;
+
+        const bal = await provider.getBalance(addr);
+
+        document.getElementById("ethBalance").textContent =
+          Number(ethers.formatEther(bal)).toFixed(5);
+
+        log("Wallet connected: " + addr);
+      } catch (e) {
+        log("Connection failed: " +
+          (e.shortMessage || e.message));
+      }
+    }
+
+    async function txWrapper(txPromise, successMsg) {
+      try {
+        const tx = await txPromise;
+
+        log("Transaction sent: " + tx.hash);
+
+        await tx.wait();
+
+        log("SUCCESS: " + successMsg);
+      } catch (e) {
+        log("Transaction failed: " +
+          (e.reason || e.shortMessage || e.message));
+      }
+    }
+
+    document.getElementById("connectBtn").onclick = connect;
+
+    // Create will
+    document.getElementById("createBtn").onclick = () => {
+      if (!contract) {
+        log("ERROR: Connect MetaMask first.");
+        return;
+      }
+
+      const ben = document.getElementById("beneficiary").value.trim();
+      const interval = document.getElementById("interval").value;
+      const amount = document.getElementById("lockAmount").value;
+
+      if (!ethers.isAddress(ben)) {
+        log("ERROR: Beneficiary must be a valid 0x address.");
+        return;
+      }
+
+      if (!interval || Number(interval) < 60 ||
+          !Number.isSafeInteger(Number(interval))) {
+        log("ERROR: Interval must be at least 60 whole seconds.");
+        return;
+      }
+
+      if (!amount || !Number.isFinite(Number(amount)) ||
+          Number(amount) <= 0) {
+        log("ERROR: Enter an ETH amount greater than 0.");
+        return;
+      }
+
+      txWrapper(
+        contract.createWill(
+          ben,
+          interval,
+          { value: ethers.parseEther(amount) }
+        ),
+        "Will created on-chain!"
+      );
+    };
+
+    // Deposit more ETH
+    document.getElementById("depositBtn").onclick = () => {
+      if (!contract) {
+        log("ERROR: Connect MetaMask first.");
+        return;
+      }
+
+      const amount =
+        document.getElementById("depositAmount").value;
+
+      if (!amount || !Number.isFinite(Number(amount)) ||
+          Number(amount) <= 0) {
+        log("ERROR: Enter an ETH deposit greater than 0.");
+        return;
+      }
+
+      txWrapper(
+        contract.deposit({
+          value: ethers.parseEther(amount)
+        }),
+        "Funds deposited."
+      );
+    };
+
+    // Proof of life
+    document.getElementById("checkinBtn").onclick = () => {
+      if (!contract) {
+        log("ERROR: Connect MetaMask first.");
+        return;
+      }
+
+      txWrapper(
+        contract.checkIn(),
+        "Proof of life recorded. Timer reset."
+      );
+    };
+
+    // Cancel will
+    document.getElementById("cancelBtn").onclick = () => {
+      if (!contract) {
+        log("ERROR: Connect MetaMask first.");
+        return;
+      }
+
+      if (!confirm(
+        "Are you sure you want to cancel your will and reclaim funds?"
+      )) {
+        return;
+      }
+
+      txWrapper(
+        contract.cancelWill(),
+        "Will cancelled, ETH refunded."
+      );
+    };
+
+    // Claim inheritance
+    document.getElementById("claimBtn").onclick = () => {
+      if (!contract) {
+        log("ERROR: Connect MetaMask first.");
+        return;
+      }
+
+      const ownerAddr =
+        document.getElementById("ownerAddr").value.trim();
+
+      if (!ethers.isAddress(ownerAddr)) {
+        log("ERROR: Enter a valid owner address.");
+        return;
+      }
+
+      if (!confirm(
+        "Submit an inheritance claim for this owner's address?"
+      )) {
+        return;
+      }
+
+      txWrapper(
+        contract.claimInheritance(ownerAddr),
+        "Inheritance claimed!"
+      );
+    };
+
+    // Inspect a will using a read-only contract.
+    document.getElementById("queryBtn").onclick = async () => {
+      try {
+        const addr =
+          document.getElementById("queryAddr").value.trim();
+
+        if (!ethers.isAddress(addr)) {
+          log("ERROR: Enter a valid owner address.");
+          return;
+        }
+
+        let readProvider = provider;
+
+        if (!readProvider) {
+          if (!window.ethereum) {
+            log("ERROR: Install MetaMask to read from the selected network.");
+            return;
+          }
+
+          readProvider =
+            new ethers.BrowserProvider(window.ethereum);
+        }
+
+        const readContract = new ethers.Contract(
+          CONTRACT_ADDRESS,
+          ABI,
+          readProvider
+        );
+
+        const w = await readContract.wills(addr);
+
+        document.getElementById("qBen").textContent =
+          w.beneficiary;
+
+        document.getElementById("qBal").textContent =
+          ethers.formatEther(w.balance);
+
+        document.getElementById("qLast").textContent =
+          Number(w.lastCheckIn) === 0
+            ? "Not recorded"
+            : new Date(
+                Number(w.lastCheckIn) * 1000
+              ).toLocaleString();
+
+        const eta =
+          await readContract.timeUntilClaimable(addr);
+
+        document.getElementById("qEta").textContent =
+          w.exists ? eta.toString() : "no will";
+
+        log(
+          "Read will data for " + addr +
+          " (read-only call; no transaction submitted)."
+        );
+      } catch (e) {
+        log("Read failed: " +
+          (e.reason || e.shortMessage || e.message));
+      }
+    };
+
+    // Reflect account changes in the connected session.
+    if (window.ethereum) {
+      window.ethereum.on("accountsChanged", () => {
+        provider = undefined;
+        signer = undefined;
+        contract = undefined;
+
+        document.getElementById("status").textContent =
+          "Wallet changed. Reconnect MetaMask.";
+
+        document.getElementById("ethBalance").textContent = "-";
+
+        log("Wallet accounts changed. Please reconnect.");
+      });
+
+      window.ethereum.on("chainChanged", () => {
+        provider = undefined;
+        signer = undefined;
+        contract = undefined;
+
+        document.getElementById("status").textContent =
+          "Network changed. Reconnect MetaMask.";
+
+        document.getElementById("ethBalance").textContent = "-";
+
+        log("Network changed. Please reconnect to the intended network.");
+      });
+    }
+  </script>
+  <script>
+    const themeToggle = document.querySelector(".theme-toggle");
+    function updateThemeToggle() {
+      const dark = document.documentElement.dataset.theme === "dark";
+      themeToggle.textContent = dark ? "Light" : "Dark";
+      themeToggle.setAttribute(
+        "aria-label",
+        dark ? "Switch to light mode" : "Switch to dark mode"
+      );
+    }
+
+    updateThemeToggle();
+    themeToggle.addEventListener("click", () => {
+      const dark = document.documentElement.dataset.theme !== "dark";
+      document.documentElement.dataset.theme = dark ? "dark" : "light";
+      localStorage.setItem("deadswitch-theme", dark ? "dark" : "light");
+      updateThemeToggle();
+    });
+  </script>
+</body>
+</html>
